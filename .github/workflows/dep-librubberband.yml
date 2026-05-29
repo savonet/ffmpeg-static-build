@@ -30,7 +30,7 @@ jobs:
       - name: Build librubberband
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          RUBBERBAND_TAG: "3.3.0"
+          RUBBERBAND_TAG: "v4.0.0"
         run: |
           git clone --depth 1 --branch $RUBBERBAND_TAG \
             https://github.com/breakfastquay/rubberband.git
