@@ -28,9 +28,11 @@ All FFmpeg built-in codecs, containers, filters, parsers, and bitstream filters 
 | Audio decoders | AAC, MP3, MP2, FLAC, Vorbis, Opus, PCM variants, + all FFmpeg built-ins |
 | Containers | All FFmpeg built-ins: mpegts, matroska/mkv, mp4/mov, ogg, webm, flac, adts, … |
 | Protocols | All FFmpeg built-ins: file, pipe, tcp, udp, http, https, rtp, srtp, srt (TLS) |
-| Filters | All FFmpeg built-ins: scale, overlay, drawtext (freetype), ass, resample (soxr), … |
+| Filters | All FFmpeg built-ins: scale, overlay, drawtext (freetype + harfbuzz + fontconfig), ass, resample (soxr), … |
 | Resampling | High-quality resampling via libsoxr |
-| Subtitles | ASS/SSA rendering via libass + libfreetype |
+| Subtitles | ASS/SSA rendering via libass + libfreetype + libfribidi |
+| Images | WebP encoding via libwebp |
+| Adaptive streaming | DASH/HLS manifest parsing via libxml2 |
 
 > **Note:** This build uses `--enable-nonfree` (for fdk-aac) and `--enable-gpl` (for x264/x265).
 > The resulting libraries are **not redistributable** under GPL to third parties.
@@ -60,6 +62,9 @@ All FFmpeg built-in codecs, containers, filters, parsers, and bitstream filters 
 | harfbuzz | 10.1.0 |
 | libass | 0.17.3 |
 | libFLAC | 1.5.0 |
+| fontconfig | 2.15.0 |
+| libxml2 | 2.13.5 |
+| libwebp | 1.5.0 |
 
 ## Supported architectures
 
@@ -123,7 +128,7 @@ Ensure these are available for your organisation/repository.
 
 ### Build caching
 
-Each of the 19 external dependencies has its own cache keyed on its version,
+Each of the 22 external dependencies has its own cache keyed on its version,
 so bumping one library triggers only that library's rebuild — all others are
 restored from cache. The FFmpeg staging install has a separate cache keyed on
 all dependency versions combined.
