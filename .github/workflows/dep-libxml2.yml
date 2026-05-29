@@ -1,0 +1,57 @@
+name: Build libxml2
+
+on:
+  workflow_call:
+    inputs:
+      arch:
+        required: true
+        type: string
+      runner:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore cache
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: deps/libxml2
+          key: ${{ inputs.arch }}-dep-libxml2-${{ hashFiles('.github/workflows/dep-libxml2.yml') }}
+
+      - name: Install build dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake pkg-config zlib1g-dev
+
+      - name: Build libxml2
+        if: steps.cache.outputs.cache-hit != 'true'
+        env:
+          LIBXML2_TAG: "v2.13.5"
+        run: |
+          git clone --depth 1 --branch $LIBXML2_TAG \
+            https://gitlab.gnome.org/GNOME/libxml2.git
+          cmake -S libxml2 -B libxml2-build \
+            -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/deps/libxml2 \
+            -DCMAKE_INSTALL_LIBDIR=lib \
+            -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DLIBXML2_WITH_PYTHON=OFF \
+            -DLIBXML2_WITH_LZMA=OFF \
+            -DLIBXML2_WITH_ICONV=OFF \
+            -DLIBXML2_WITH_ICU=OFF \
+            -DLIBXML2_WITH_TESTS=OFF \
+            -DLIBXML2_WITH_PROGRAMS=OFF \
+            -DLIBXML2_WITH_ZLIB=ON
+          cmake --build libxml2-build -j$(nproc)
+          cmake --install libxml2-build
+
+      - name: Save cache
+        if: always() && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: deps/libxml2
+          key: ${{ inputs.arch }}-dep-libxml2-${{ hashFiles('.github/workflows/dep-libxml2.yml') }}

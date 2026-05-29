@@ -213,6 +213,63 @@ jobs:
       arch: ${{ matrix.arch }}
       runner: ${{ matrix.runner }}
 
+  dep-librubberband:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    uses: ./.github/workflows/dep-librubberband.yml
+    with:
+      arch: ${{ matrix.arch }}
+      runner: ${{ matrix.runner }}
+
+  dep-libxml2:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    uses: ./.github/workflows/dep-libxml2.yml
+    with:
+      arch: ${{ matrix.arch }}
+      runner: ${{ matrix.runner }}
+
+  dep-libwebp:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    uses: ./.github/workflows/dep-libwebp.yml
+    with:
+      arch: ${{ matrix.arch }}
+      runner: ${{ matrix.runner }}
+
+  dep-fontconfig:
+    needs: dep-libfreetype
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    uses: ./.github/workflows/dep-fontconfig.yml
+    with:
+      arch: ${{ matrix.arch }}
+      runner: ${{ matrix.runner }}
+
   dep-fribidi:
     strategy:
       fail-fast: false
@@ -305,6 +362,10 @@ jobs:
       - dep-dav1d
       - dep-libsoxr
       - dep-libfreetype
+      - dep-fontconfig
+      - dep-librubberband
+      - dep-libxml2
+      - dep-libwebp
       - dep-fribidi
       - dep-harfbuzz
       - dep-libass
@@ -427,6 +488,30 @@ jobs:
           path: deps/libfreetype
           key: ${{ matrix.arch }}-dep-libfreetype-${{ hashFiles('.github/workflows/dep-libfreetype.yml') }}
 
+      - name: Restore fontconfig cache
+        uses: actions/cache/restore@v4
+        with:
+          path: deps/fontconfig
+          key: ${{ matrix.arch }}-dep-fontconfig-${{ hashFiles('.github/workflows/dep-fontconfig.yml', '.github/workflows/dep-libfreetype.yml') }}
+
+      - name: Restore librubberband cache
+        uses: actions/cache/restore@v4
+        with:
+          path: deps/librubberband
+          key: ${{ matrix.arch }}-dep-librubberband-${{ hashFiles('.github/workflows/dep-librubberband.yml') }}
+
+      - name: Restore libxml2 cache
+        uses: actions/cache/restore@v4
+        with:
+          path: deps/libxml2
+          key: ${{ matrix.arch }}-dep-libxml2-${{ hashFiles('.github/workflows/dep-libxml2.yml') }}
+
+      - name: Restore libwebp cache
+        uses: actions/cache/restore@v4
+        with:
+          path: deps/libwebp
+          key: ${{ matrix.arch }}-dep-libwebp-${{ hashFiles('.github/workflows/dep-libwebp.yml') }}
+
       - name: Restore fribidi cache
         uses: actions/cache/restore@v4
         with:
@@ -450,7 +535,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: staging
-          key: ${{ matrix.arch }}-staging-ffmpeg${{ env.FFMPEG_TAG }}-${{ hashFiles('.github/workflows/dep-openssl.yml', '.github/workflows/dep-srt.yml', '.github/workflows/dep-libflac.yml', '.github/workflows/dep-libogg.yml', '.github/workflows/dep-libvorbis.yml', '.github/workflows/dep-libopus.yml', '.github/workflows/dep-lame.yml', '.github/workflows/dep-libshine.yml', '.github/workflows/dep-fdk-aac.yml', '.github/workflows/dep-x264.yml', '.github/workflows/dep-x265.yml', '.github/workflows/dep-libvpx.yml', '.github/workflows/dep-svtav1.yml', '.github/workflows/dep-dav1d.yml', '.github/workflows/dep-libsoxr.yml', '.github/workflows/dep-libfreetype.yml', '.github/workflows/dep-fribidi.yml', '.github/workflows/dep-harfbuzz.yml', '.github/workflows/dep-libass.yml', '.github/workflows/build.yml') }}
+          key: ${{ matrix.arch }}-staging-ffmpeg${{ env.FFMPEG_TAG }}-${{ hashFiles('.github/workflows/dep-openssl.yml', '.github/workflows/dep-srt.yml', '.github/workflows/dep-libflac.yml', '.github/workflows/dep-libogg.yml', '.github/workflows/dep-libvorbis.yml', '.github/workflows/dep-libopus.yml', '.github/workflows/dep-lame.yml', '.github/workflows/dep-libshine.yml', '.github/workflows/dep-fdk-aac.yml', '.github/workflows/dep-x264.yml', '.github/workflows/dep-x265.yml', '.github/workflows/dep-libvpx.yml', '.github/workflows/dep-svtav1.yml', '.github/workflows/dep-dav1d.yml', '.github/workflows/dep-libsoxr.yml', '.github/workflows/dep-libfreetype.yml', '.github/workflows/dep-fontconfig.yml', '.github/workflows/dep-librubberband.yml', '.github/workflows/dep-libxml2.yml', '.github/workflows/dep-libwebp.yml', '.github/workflows/dep-fribidi.yml', '.github/workflows/dep-harfbuzz.yml', '.github/workflows/dep-libass.yml', '.github/workflows/build.yml') }}
 
       - name: Clone FFmpeg
         if: steps.cache-staging.outputs.cache-hit != 'true'
@@ -487,6 +572,12 @@ jobs:
             --enable-libass \
             --enable-libfdk-aac \
             --enable-libfreetype \
+            --enable-libharfbuzz \
+            --enable-libfribidi \
+            --enable-fontconfig \
+            --enable-librubberband \
+            --enable-libxml2 \
+            --enable-libwebp \
             --enable-libmp3lame \
             --enable-libshine \
             --enable-libopus \
