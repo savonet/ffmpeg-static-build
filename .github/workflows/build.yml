@@ -391,6 +391,9 @@ jobs:
             nasm \
             pkg-config \
             zlib1g-dev
+          sudo curl -fsSL https://raw.githubusercontent.com/FFmpeg/gas-preprocessor/master/gas-preprocessor.pl \
+            -o /usr/local/bin/gas-preprocessor.pl
+          sudo chmod +x /usr/local/bin/gas-preprocessor.pl
 
       - name: Restore OpenSSL cache
         uses: actions/cache/restore@v4

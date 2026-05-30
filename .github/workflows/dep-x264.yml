@@ -25,7 +25,11 @@ jobs:
 
       - name: Install build dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: sudo apt-get update && sudo apt-get install -y build-essential nasm
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential nasm
+          sudo curl -fsSL https://raw.githubusercontent.com/FFmpeg/gas-preprocessor/master/gas-preprocessor.pl \
+            -o /usr/local/bin/gas-preprocessor.pl
+          sudo chmod +x /usr/local/bin/gas-preprocessor.pl
 
       - name: Build x264
         if: steps.cache.outputs.cache-hit != 'true'
