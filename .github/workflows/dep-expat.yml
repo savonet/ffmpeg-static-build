@@ -1,0 +1,54 @@
+name: Build expat
+
+on:
+  workflow_call:
+    inputs:
+      arch:
+        required: true
+        type: string
+      runner:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore cache
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: deps/expat
+          key: ${{ inputs.arch }}-dep-expat-${{ hashFiles('.github/workflows/dep-expat.yml') }}
+
+      - name: Install build dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+
+      - name: Build expat
+        if: steps.cache.outputs.cache-hit != 'true'
+        env:
+          EXPAT_TAG: "R_2_8_1"
+        run: |
+          git clone --depth 1 --branch $EXPAT_TAG \
+            https://github.com/libexpat/libexpat.git
+          cmake -S libexpat/expat -B expat-build \
+            -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/deps/expat \
+            -DCMAKE_INSTALL_LIBDIR=lib \
+            -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DEXPAT_BUILD_TOOLS=OFF \
+            -DEXPAT_BUILD_EXAMPLES=OFF \
+            -DEXPAT_BUILD_TESTS=OFF \
+            -DEXPAT_SHARED_LIBS=OFF
+          cmake --build expat-build -j$(nproc)
+          cmake --install expat-build
+
+      - name: Save cache
+        if: always() && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: deps/expat
+          key: ${{ inputs.arch }}-dep-expat-${{ hashFiles('.github/workflows/dep-expat.yml') }}

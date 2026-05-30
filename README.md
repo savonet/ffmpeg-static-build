@@ -62,6 +62,7 @@ All FFmpeg built-in codecs, containers, filters, parsers, and bitstream filters 
 | harfbuzz | 10.1.0 |
 | libass | 0.17.3 |
 | libFLAC | 1.5.0 |
+| expat | 2.8.1 |
 | fontconfig | 2.15.0 |
 | libxml2 | 2.13.5 |
 | libwebp | 1.5.0 |
@@ -128,7 +129,7 @@ Ensure these are available for your organisation/repository.
 
 ### Build caching
 
-Each of the 22 external dependencies has its own cache keyed on its version,
+Each of the 23 external dependencies has its own cache keyed on its version,
 so bumping one library triggers only that library's rebuild — all others are
 restored from cache. The FFmpeg staging install has a separate cache keyed on
 all dependency versions combined.

@@ -21,7 +21,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: deps/fontconfig
-          key: ${{ inputs.arch }}-dep-fontconfig-${{ hashFiles('.github/workflows/dep-fontconfig.yml', '.github/workflows/dep-libfreetype.yml') }}
+          key: ${{ inputs.arch }}-dep-fontconfig-${{ hashFiles('.github/workflows/dep-fontconfig.yml', '.github/workflows/dep-libfreetype.yml', '.github/workflows/dep-expat.yml') }}
 
       - name: Restore libfreetype cache
         if: steps.cache.outputs.cache-hit != 'true'
@@ -30,9 +30,16 @@ jobs:
           path: deps/libfreetype
           key: ${{ inputs.arch }}-dep-libfreetype-${{ hashFiles('.github/workflows/dep-libfreetype.yml') }}
 
+      - name: Restore expat cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: deps/expat
+          key: ${{ inputs.arch }}-dep-expat-${{ hashFiles('.github/workflows/dep-expat.yml') }}
+
       - name: Install build dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: sudo apt-get update && sudo apt-get install -y build-essential meson ninja-build pkg-config libexpat1-dev
+        run: sudo apt-get update && sudo apt-get install -y build-essential meson ninja-build pkg-config
 
       - name: Build fontconfig
         if: steps.cache.outputs.cache-hit != 'true'
@@ -41,7 +48,7 @@ jobs:
         run: |
           git clone --depth 1 --branch $FONTCONFIG_TAG \
             https://gitlab.freedesktop.org/fontconfig/fontconfig.git
-          PKG_CONFIG_PATH=$(find $GITHUB_WORKSPACE/deps/libfreetype -name pkgconfig -type d | tr '\n' ':') \
+          PKG_CONFIG_PATH=$(find $GITHUB_WORKSPACE/deps/libfreetype $GITHUB_WORKSPACE/deps/expat -name pkgconfig -type d | tr '\n' ':') \
           meson setup fc-build fontconfig \
             --prefix=$GITHUB_WORKSPACE/deps/fontconfig \
             --default-library=static \
@@ -60,4 +67,4 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: deps/fontconfig
-          key: ${{ inputs.arch }}-dep-fontconfig-${{ hashFiles('.github/workflows/dep-fontconfig.yml', '.github/workflows/dep-libfreetype.yml') }}
+          key: ${{ inputs.arch }}-dep-fontconfig-${{ hashFiles('.github/workflows/dep-fontconfig.yml', '.github/workflows/dep-libfreetype.yml', '.github/workflows/dep-expat.yml') }}
