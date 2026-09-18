@@ -30,7 +30,7 @@ jobs:
       - name: Build x265
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          X265_VERSION: "4.1"
+          X265_VERSION: "4.2"
         run: |
           curl -L "https://bitbucket.org/multicoreware/x265_git/downloads/x265_${X265_VERSION}.tar.gz" \
             -o x265.tar.gz

@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FFMPEG_TAG: n8.1
+  FFMPEG_TAG: n9.0.2
   PKG_NAME: ffmpeg-liquidsoap
   TOOLS_PKG_NAME: ffmpeg-liquidsoap-tools
   INSTALL_PREFIX: /usr/local

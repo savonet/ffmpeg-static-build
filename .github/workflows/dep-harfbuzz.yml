@@ -37,7 +37,7 @@ jobs:
       - name: Build harfbuzz
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          HARFBUZZ_TAG: 10.1.0
+          HARFBUZZ_TAG: 14.4.0
         run: |
           git clone --depth 1 --branch $HARFBUZZ_TAG \
             https://github.com/harfbuzz/harfbuzz.git

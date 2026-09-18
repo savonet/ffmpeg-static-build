@@ -30,7 +30,7 @@ jobs:
       - name: Build libogg
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          OGG_TAG: v1.3.5
+          OGG_TAG: v1.3.6
         run: |
           git clone --depth 1 --branch $OGG_TAG \
             https://github.com/xiph/ogg.git

@@ -37,7 +37,7 @@ jobs:
       - name: Build SRT
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          SRT_TAG: v1.5.3
+          SRT_TAG: v1.5.7
         run: |
           git clone --depth 1 --branch $SRT_TAG \
             https://github.com/Haivision/srt.git

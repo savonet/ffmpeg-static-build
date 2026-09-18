@@ -42,30 +42,30 @@ All FFmpeg built-in codecs, containers, filters, parsers, and bitstream filters 
 
 | Library | Version |
 |---------|---------|
-| FFmpeg | 8.1 |
-| OpenSSL | 3.4.0 |
-| SRT | 1.5.3 |
+| FFmpeg | 9.0.2 |
+| OpenSSL | 3.6.4 |
+| SRT | 1.5.7 |
 | fdk-aac | 2.0.3 |
 | lame | 3.100 |
-| libogg | 1.3.5 |
+| libogg | 1.3.6 |
 | libvorbis | 1.3.7 |
-| libopus | 1.5.2 |
+| libopus | 1.6.1 |
 | libshine | 3.1.1 |
-| x264 | 31e19f92 |
-| x265 | 4.1 |
-| libvpx | 1.14.1 |
-| SVT-AV1 | 2.3.0 |
-| dav1d | 1.5.0 |
+| x264 | b35605ac |
+| x265 | 4.2 |
+| libvpx | 1.17.0 |
+| SVT-AV1 | 4.2.0 |
+| dav1d | 1.5.4 |
 | libsoxr | 0.1.3 |
-| libfreetype | 2.13.3 |
-| fribidi | 1.0.15 |
-| harfbuzz | 10.1.0 |
-| libass | 0.17.3 |
+| libfreetype | 2.14.3 |
+| fribidi | 1.0.16 |
+| harfbuzz | 14.4.0 |
+| libass | 0.17.5 |
 | libFLAC | 1.5.0 |
-| expat | 2.8.1 |
-| fontconfig | 2.15.0 |
-| libxml2 | 2.13.5 |
-| libwebp | 1.5.0 |
+| expat | 2.8.4 |
+| fontconfig | 2.18.3 |
+| libxml2 | 2.15.4 |
+| libwebp | 1.6.0 |
 
 ## Supported architectures
 

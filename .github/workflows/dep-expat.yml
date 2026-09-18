@@ -30,7 +30,7 @@ jobs:
       - name: Build expat
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          EXPAT_TAG: "R_2_8_1"
+          EXPAT_TAG: "R_2_8_4"
         run: |
           git clone --depth 1 --branch $EXPAT_TAG \
             https://github.com/libexpat/libexpat.git

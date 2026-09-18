@@ -30,7 +30,7 @@ jobs:
       - name: Build OpenSSL
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          OPENSSL_TAG: openssl-3.4.0
+          OPENSSL_TAG: openssl-3.6.4
         run: |
           git clone --depth 1 --branch $OPENSSL_TAG \
             https://github.com/openssl/openssl.git

@@ -30,7 +30,7 @@ jobs:
       - name: Build libvpx
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          VPX_TAG: v1.14.1
+          VPX_TAG: v1.17.0
         run: |
           git clone --depth 1 --branch $VPX_TAG \
             https://github.com/webmproject/libvpx.git

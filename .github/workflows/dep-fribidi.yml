@@ -30,7 +30,7 @@ jobs:
       - name: Build fribidi
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          FRIBIDI_TAG: v1.0.15
+          FRIBIDI_TAG: v1.0.16
         run: |
           git clone --depth 1 --branch $FRIBIDI_TAG \
             https://github.com/fribidi/fribidi.git

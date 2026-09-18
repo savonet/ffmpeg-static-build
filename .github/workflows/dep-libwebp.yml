@@ -30,7 +30,7 @@ jobs:
       - name: Build libwebp
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          LIBWEBP_TAG: "v1.5.0"
+          LIBWEBP_TAG: "v1.6.0"
         run: |
           git clone --depth 1 --branch $LIBWEBP_TAG \
             https://chromium.googlesource.com/webm/libwebp

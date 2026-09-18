@@ -51,7 +51,7 @@ jobs:
       - name: Build libass
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          LIBASS_TAG: 0.17.3
+          LIBASS_TAG: 0.17.5
         run: |
           git clone --depth 1 --branch $LIBASS_TAG \
             https://github.com/libass/libass.git

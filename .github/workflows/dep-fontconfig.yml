@@ -44,7 +44,7 @@ jobs:
       - name: Build fontconfig
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          FONTCONFIG_TAG: "2.15.0"
+          FONTCONFIG_TAG: "2.18.3"
         run: |
           git clone --depth 1 --branch $FONTCONFIG_TAG \
             https://gitlab.freedesktop.org/fontconfig/fontconfig.git
