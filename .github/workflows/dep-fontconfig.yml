@@ -39,12 +39,17 @@ jobs:
 
       - name: Install build dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: sudo apt-get update && sudo apt-get install -y build-essential meson ninja-build pkg-config
+        env:
+          MESON_VERSION: "1.12.0"
+        # fontconfig needs meson >= 1.11.0, newer than the runner's apt package.
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential ninja-build pkg-config python3-pip
+          sudo pip3 install --break-system-packages meson==$MESON_VERSION
 
       - name: Build fontconfig
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          FONTCONFIG_TAG: "2.15.0"
+          FONTCONFIG_TAG: "2.18.3"
         run: |
           git clone --depth 1 --branch $FONTCONFIG_TAG \
             https://gitlab.freedesktop.org/fontconfig/fontconfig.git

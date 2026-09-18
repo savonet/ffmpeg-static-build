@@ -30,7 +30,7 @@ jobs:
       - name: Build libfreetype
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          FREETYPE_TAG: VER-2-13-3
+          FREETYPE_TAG: VER-2-14-3
         run: |
           git clone --depth 1 --branch $FREETYPE_TAG \
             https://gitlab.freedesktop.org/freetype/freetype.git

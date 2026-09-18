@@ -30,7 +30,7 @@ jobs:
       - name: Build SVT-AV1
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          SVTAV1_TAG: v2.3.0
+          SVTAV1_TAG: v4.2.0
         run: |
           git clone --depth 1 --branch $SVTAV1_TAG \
             https://gitlab.com/AOMediaCodec/SVT-AV1.git

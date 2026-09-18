@@ -30,7 +30,7 @@ jobs:
       - name: Build dav1d
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          DAV1D_TAG: 1.5.0
+          DAV1D_TAG: 1.5.4
         run: |
           git clone --depth 1 --branch $DAV1D_TAG \
             https://code.videolan.org/videolan/dav1d.git

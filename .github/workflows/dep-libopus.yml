@@ -30,7 +30,7 @@ jobs:
       - name: Build libopus
         if: steps.cache.outputs.cache-hit != 'true'
         env:
-          OPUS_TAG: v1.5.2
+          OPUS_TAG: v1.6.1
         run: |
           git clone --depth 1 --branch $OPUS_TAG \
             https://github.com/xiph/opus.git
