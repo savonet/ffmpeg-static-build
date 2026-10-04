@@ -41,7 +41,7 @@ jobs:
             --enable-static \
             --disable-shared \
             --disable-dependency-tracking \
-            CXXFLAGS="-fPIC"
+            --with-pic
           make -j$(nproc)
           make install
 

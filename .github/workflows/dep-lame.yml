@@ -36,6 +36,7 @@ jobs:
             -o lame.tar.gz
           tar xzf lame.tar.gz
           cd lame-$LAME_VERSION
+          # lame drops autoconf's default -O2 and only knows optimization flags for old gcc versions.
           ./configure \
             --prefix=$GITHUB_WORKSPACE/deps/lame \
             --enable-static \
@@ -43,7 +44,8 @@ jobs:
             --disable-frontend \
             --disable-decoder \
             --enable-nasm \
-            CFLAGS="-fPIC"
+            --with-pic \
+            CFLAGS="-O2"
           make -j$(nproc)
           make install
 

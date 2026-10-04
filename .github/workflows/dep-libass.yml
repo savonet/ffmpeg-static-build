@@ -64,7 +64,7 @@ jobs:
             --disable-shared \
             --disable-fontconfig \
             --disable-require-system-font-provider \
-            CFLAGS="-fPIC"
+            --with-pic
           make -j$(nproc)
           make install
 

@@ -48,7 +48,7 @@ jobs:
             --prefix=$GITHUB_WORKSPACE/deps/libvorbis \
             --enable-static \
             --disable-shared \
-            CFLAGS="-fPIC"
+            --with-pic
           make -j$(nproc)
           make install
 

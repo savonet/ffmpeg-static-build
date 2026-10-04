@@ -40,7 +40,7 @@ jobs:
             --prefix=$GITHUB_WORKSPACE/deps/libshine \
             --enable-static \
             --disable-shared \
-            CFLAGS="-fPIC"
+            --with-pic
           make -j$(nproc)
           make install
 

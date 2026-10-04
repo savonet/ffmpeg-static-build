@@ -42,7 +42,7 @@ jobs:
             --disable-shared \
             --disable-extra-programs \
             --disable-doc \
-            CFLAGS="-fPIC"
+            --with-pic
           make -j$(nproc)
           make install
 
