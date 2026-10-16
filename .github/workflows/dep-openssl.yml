@@ -42,7 +42,7 @@ jobs:
           esac
           ./Configure $OPENSSL_TARGET \
             --prefix=$GITHUB_WORKSPACE/deps/openssl \
-            --openssldir=$GITHUB_WORKSPACE/deps/openssl/ssl \
+            --openssldir=/etc/ssl \
             --libdir=lib \
             no-shared no-tests no-zlib no-ssl3 no-ssl3-method \
             -fPIC

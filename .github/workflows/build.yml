@@ -728,7 +728,7 @@ jobs:
       - name: Install build tools and packages
         run: |
           apt-get update
-          apt-get install -y build-essential libbz2-dev pkg-config ./*.deb
+          apt-get install -y build-essential ca-certificates libbz2-dev pkg-config ./*.deb
 
       - name: Build test program
         run: |
@@ -745,6 +745,18 @@ jobs:
         run: |
           ffmpeg -version
           ffprobe -version
+
+      - name: Test TLS certificate verification
+        env:
+          URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/README.md
+        run: |
+          ffmpeg -v error -f data -i "$URL" -map 0 -c copy -f data - > /dev/null
+          # Verification must reject the peer when no CA is reachable.
+          if SSL_CERT_FILE=/dev/null SSL_CERT_DIR=/nonexistent \
+             ffmpeg -v error -f data -i "$URL" -map 0 -c copy -f data - > /dev/null; then
+            echo "TLS peer verification is not enforced"
+            exit 1
+          fi
 
   publish:
     runs-on: ubuntu-24.04
