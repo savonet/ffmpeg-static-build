@@ -11,7 +11,11 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FFMPEG_TAG: n9.0.2
+  # savonet/FFmpeg liquidsoap/release-9.0: release/9.0 plus the fixes we ship.
+  # Bump the FFMPEG_VERSION suffix whenever FFMPEG_REF changes.
+  FFMPEG_REPO: https://github.com/savonet/FFmpeg.git
+  FFMPEG_REF: 7ad46da71eebb87ccf8e91a4c43ad476b2626325
+  FFMPEG_VERSION: 9.0.2+liquidsoap.1
   PKG_NAME: ffmpeg-liquidsoap
   TOOLS_PKG_NAME: ffmpeg-liquidsoap-tools
   INSTALL_PREFIX: /usr/local
@@ -539,13 +543,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: staging
-          key: ${{ matrix.arch }}-staging-ffmpeg${{ env.FFMPEG_TAG }}-${{ hashFiles('.github/workflows/dep-openssl.yml', '.github/workflows/dep-srt.yml', '.github/workflows/dep-libflac.yml', '.github/workflows/dep-libogg.yml', '.github/workflows/dep-libvorbis.yml', '.github/workflows/dep-libopus.yml', '.github/workflows/dep-lame.yml', '.github/workflows/dep-libshine.yml', '.github/workflows/dep-fdk-aac.yml', '.github/workflows/dep-x264.yml', '.github/workflows/dep-x265.yml', '.github/workflows/dep-libvpx.yml', '.github/workflows/dep-svtav1.yml', '.github/workflows/dep-dav1d.yml', '.github/workflows/dep-libsoxr.yml', '.github/workflows/dep-libfreetype.yml', '.github/workflows/dep-expat.yml', '.github/workflows/dep-fontconfig.yml', '.github/workflows/dep-libxml2.yml', '.github/workflows/dep-libwebp.yml', '.github/workflows/dep-fribidi.yml', '.github/workflows/dep-harfbuzz.yml', '.github/workflows/dep-libass.yml', '.github/workflows/build.yml') }}
+          key: ${{ matrix.arch }}-staging-ffmpeg-${{ env.FFMPEG_REF }}-${{ hashFiles('.github/workflows/dep-openssl.yml', '.github/workflows/dep-srt.yml', '.github/workflows/dep-libflac.yml', '.github/workflows/dep-libogg.yml', '.github/workflows/dep-libvorbis.yml', '.github/workflows/dep-libopus.yml', '.github/workflows/dep-lame.yml', '.github/workflows/dep-libshine.yml', '.github/workflows/dep-fdk-aac.yml', '.github/workflows/dep-x264.yml', '.github/workflows/dep-x265.yml', '.github/workflows/dep-libvpx.yml', '.github/workflows/dep-svtav1.yml', '.github/workflows/dep-dav1d.yml', '.github/workflows/dep-libsoxr.yml', '.github/workflows/dep-libfreetype.yml', '.github/workflows/dep-expat.yml', '.github/workflows/dep-fontconfig.yml', '.github/workflows/dep-libxml2.yml', '.github/workflows/dep-libwebp.yml', '.github/workflows/dep-fribidi.yml', '.github/workflows/dep-harfbuzz.yml', '.github/workflows/dep-libass.yml', '.github/workflows/build.yml') }}
 
       - name: Clone FFmpeg
         if: steps.cache-staging.outputs.cache-hit != 'true'
         run: |
-          git clone --depth 1 --branch ${{ env.FFMPEG_TAG }} \
-            https://github.com/FFmpeg/FFmpeg.git ffmpeg-src
+          git init -q ffmpeg-src
+          git -C ffmpeg-src fetch --depth 1 ${{ env.FFMPEG_REPO }} ${{ env.FFMPEG_REF }}
+          git -C ffmpeg-src checkout -q FETCH_HEAD
 
       - name: Configure FFmpeg
         if: steps.cache-staging.outputs.cache-hit != 'true'
@@ -654,8 +659,7 @@ jobs:
 
       - name: Create Debian packages
         run: |
-          VERSION=${{ env.FFMPEG_TAG }}
-          VERSION=${VERSION#n}
+          VERSION=${{ env.FFMPEG_VERSION }}
           STAGING=$GITHUB_WORKSPACE/staging
           BIN=$STAGING${{ env.INSTALL_PREFIX }}/bin
 
@@ -819,8 +823,7 @@ jobs:
       - name: Create index page
         run: |
           REPO_URL="https://liquidsoap.info/ffmpeg-static-build"
-          VERSION=${{ env.FFMPEG_TAG }}
-          VERSION=${VERSION#n}
+          VERSION=${{ env.FFMPEG_VERSION }}
           cat > repo/index.html <<EOF
           <!DOCTYPE html>
           <html><head><meta charset="utf-8"><title>Liquidsoap FFmpeg Repository</title></head>
