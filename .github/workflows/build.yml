@@ -14,8 +14,8 @@ env:
   # savonet/FFmpeg liquidsoap/release-9.0: release/9.0 plus the fixes we ship.
   # Bump the FFMPEG_VERSION suffix whenever FFMPEG_REF changes.
   FFMPEG_REPO: https://github.com/savonet/FFmpeg.git
-  FFMPEG_REF: 7ad46da71eebb87ccf8e91a4c43ad476b2626325
-  FFMPEG_VERSION: 9.0.2+liquidsoap.1
+  FFMPEG_REF: 2e393b95beacedfc6892a1e13c7dcaac4b1f7270
+  FFMPEG_VERSION: 9.0.2+liquidsoap.2
   PKG_NAME: ffmpeg-liquidsoap
   TOOLS_PKG_NAME: ffmpeg-liquidsoap-tools
   INSTALL_PREFIX: /usr/local
